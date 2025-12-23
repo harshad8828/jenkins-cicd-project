@@ -2,14 +2,14 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "yourdockerhubusername/jenkins-cicd-app"
+        IMAGE_NAME = "shaikh8828/jenkins-cicd-app"
     }
 
     stages {
 
         stage('Clone Code') {
             steps {
-                git 'https://github.com/yourusername/jenkins-cicd-project.git'
+                git 'https://github.com/harshad8828/jenkins-cicd-project.git'
             }
         }
 
@@ -23,7 +23,7 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'dockerhub-pass', variable: 'DOCKER_PASS')]) {
                     sh '''
-                    docker login -u yourdockerhubusername -p $DOCKER_PASS
+                    docker login -u shaikh8828 -p $DOCKER_PASS
                     docker push $IMAGE_NAME:latest
                     '''
                 }
