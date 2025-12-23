@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "shaikh8828/jenkins-cicd-app"
+        IMAGE_NAME = "$DOCKER_USER/jenkins-cicd-app"
     }
 
     stages {
@@ -14,15 +14,15 @@ pipeline {
         }
 
         stage('Push Image to Docker Hub') {
-            steps {
-                withCredentials([string(credentialsId: 'dockerhub-pass', variable: 'DOCKER_PASS')]) {
-                    sh '''
-                    docker login -u shaikh8828 -p $DOCKER_PASS
-                    docker push $IMAGE_NAME:latest
-                    '''
-                }
-            }
+    steps {
+        withCredentials([usernamePassword(credentialsId: 'dockerhub-pass', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+            sh '''
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker push $IMAGE_NAME:latest
+            '''
         }
+    }
+}
 
         stage('Deploy Container') {
             steps {
